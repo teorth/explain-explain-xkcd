@@ -1,0 +1,15 @@
+
+To install Perl modules:
+
+first run
+
+> cpan App::cpanminus
+
+to get an improved module downloader cpanm, then to install a module like MediaWiki::API write
+
+> cpanm MediaWiki::API 
+
+Encountering an error: 'dmake' is not recognized as an internal or external command,
+operable program or batch file.  This is because ActiveState Perl does not support dmake.  Switching to StrawberryPerl instead.
+
+
