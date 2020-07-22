@@ -10,6 +10,8 @@ to get an improved module downloader cpanm, then to install a module like MediaW
 > cpanm MediaWiki::API 
 
 Encountering an error: 'dmake' is not recognized as an internal or external command,
-operable program or batch file.  This is because ActiveState Perl does not support dmake.  Switching to StrawberryPerl instead.
+operable program or batch file.  This is because ActiveState Perl does not support dmake.  Switching to StrawberryPerl instead.  This works fine.  Also loaded
 
+> cpanm JSON::Create
+> cpanm JSON::PP
 
