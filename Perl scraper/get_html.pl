@@ -57,9 +57,9 @@ sub scrape_explainxkcd_page {
 	print("Scraping '$name' for comics.\n");
 	
 	for my $line (split /\n/, $text){
-		# check each line of $text to see if it contains the string "comicsrow|$1|$2|$3|"
-		# $1 is comic number; $2 is date published; $3 is comic title
-		if ($line =~ /comicsrow\|(.*)\|(.*)\|(.*)\|/)
+		# check each line of $text to see if it contains the string "comicsrow|$1|$2|$3|" or "comicsrow|$1|$2|$3}"
+		# $1 is comic number; $2 is date published; $3 is comic title.  Regex was designed so that $1, $2, $3 do not contain the special characters | or }
+		if ($line =~ /comicsrow\|([^\|]*)\|([^\|]*)\|([^\|\}]*)[\|\}]/)
 		{
 			my $comicnum = $1;
 			
@@ -79,7 +79,7 @@ sub scrape_explainxkcd_page {
 			$key{"URL"} = "https://www.explainxkcd.com/wiki/index.php/$comicnum:_$title";
 			
 			#add all this to hash
-			$hash ->{$1} = \%key;
+			$hash ->{$comicnum} = \%key;			
 		}
 	}	
 	
@@ -98,11 +98,11 @@ my %title_db = ();
 # It's important here that we use \%title_db instead of %title_db in order to pass a reference to the hash %title_db rather than a copy of the hash
 
 
-scrape_explainxkcd_page( \%title_db, 'List of all comics' );
 scrape_explainxkcd_page( \%title_db, 'List of all comics (1-500)' );
 scrape_explainxkcd_page( \%title_db, 'List of all comics (501-1000)' );
 scrape_explainxkcd_page( \%title_db, 'List of all comics (1001-1500)' );
 scrape_explainxkcd_page( \%title_db, 'List of all comics (1501-2000)' );
+scrape_explainxkcd_page( \%title_db, 'List of all comics' );
 
 my $size = keys %title_db;
 print "$size comics found and recorded.\n";
