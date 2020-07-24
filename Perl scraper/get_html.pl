@@ -53,6 +53,8 @@ sub scrape_explainxkcd_page {
 	
 	# grab the text
 	my $text = get_explainxkcd_page($name);
+
+	print("Scraping '$name' for comics.\n");
 	
 	for my $line (split /\n/, $text){
 		# check each line of $text to see if it contains the string "comicsrow|$1|$2|$3|"
@@ -60,6 +62,8 @@ sub scrape_explainxkcd_page {
 		if ($line =~ /comicsrow\|(.*)\|(.*)\|(.*)\|/)
 		{
 			my $comicnum = $1;
+			
+#			print("Adding comic $1: $3\n");
 		
 			# create a hash of various attributes of comic $1 and add it to the %title_db hash
 			my %key = ();
@@ -78,6 +82,9 @@ sub scrape_explainxkcd_page {
 			$hash ->{$1} = \%key;
 		}
 	}	
+	
+	my $size = keys %{$hash};
+	print("Hash now has $size entries.\n");
 }
 
 
@@ -90,12 +97,22 @@ my %title_db = ();
 
 # It's important here that we use \%title_db instead of %title_db in order to pass a reference to the hash %title_db rather than a copy of the hash
 
+
 scrape_explainxkcd_page( \%title_db, 'List of all comics' );
+scrape_explainxkcd_page( \%title_db, 'List of all comics (1-500)' );
+scrape_explainxkcd_page( \%title_db, 'List of all comics (501-1000)' );
+scrape_explainxkcd_page( \%title_db, 'List of all comics (1001-1500)' );
+scrape_explainxkcd_page( \%title_db, 'List of all comics (1501-2000)' );
+
+my $size = keys %title_db;
+print "$size comics found and recorded.\n";
+
 
 # uncomment this if you want to see what \%title_db looks like
 #print("Output of title_db:\n");
 #print Dumper \%title_db;
 
 dump_to_file(".\\titles.txt", \%title_db);
+
 
 
