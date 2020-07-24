@@ -78,7 +78,7 @@ sub scrape_explainxkcd_page {
 			#create the URL
 			$key{"URL"} = "https://www.explainxkcd.com/wiki/index.php/$comicnum:_$title";
 			
-			#add all this to hash
+			#add all this to hash.  Syntax here is different from $key because $hash is a reference to a hash rather than a hash itself.
 			$hash ->{$comicnum} = \%key;			
 		}
 	}	
@@ -95,7 +95,7 @@ my %title_db = ();
 
 # scrape pages for comics.  Can't use 'List of all comics (full)' because it is too large, so we use individual pages instead
 
-# It's important here that we use \%title_db instead of %title_db in order to pass a reference to the hash %title_db rather than a copy of the hash
+# It's important here that we use \%title_db instead of %title_db in order to pass a reference to the hash %title_db rather than a copy of the hash, otherwise %title_db would not be modified
 
 
 scrape_explainxkcd_page( \%title_db, 'List of all comics (1-500)' );
@@ -104,15 +104,13 @@ scrape_explainxkcd_page( \%title_db, 'List of all comics (1001-1500)' );
 scrape_explainxkcd_page( \%title_db, 'List of all comics (1501-2000)' );
 scrape_explainxkcd_page( \%title_db, 'List of all comics' );
 
-my $size = keys %title_db;
-print "$size comics found and recorded.\n";
-
-
 # uncomment this if you want to see what \%title_db looks like
 #print("Output of title_db:\n");
 #print Dumper \%title_db;
 
 dump_to_file(".\\titles.txt", \%title_db);
 
+my $size = keys %title_db;
+print "$size comics found and recorded.\n";
 
 
